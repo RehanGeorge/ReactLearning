@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { useState } from 'react';
 
 import Header from './components/Header.jsx';
@@ -16,17 +17,17 @@ function App() {
     setUserInput((prevUserInput) => {
       return {
         ...prevUserInput,
-        [inputIdentifier]: newValue,
+        [inputIdentifier]: +newValue,
       };
     });
   }
 
   return (
-    <>
+    <StrictMode>
       <Header />
       <UserInput userInput={userInput} onChange={handleChange} />
       <Results input={userInput} />
-    </>
+    </StrictMode >
   );
 }
 
