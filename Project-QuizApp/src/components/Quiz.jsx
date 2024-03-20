@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import QUESTIONS from '../questions.js';
 import quizComplete from '../assets/quiz-complete.png';
+import QuestionTimer from './QuestionTimer.jsx';
 
 export default function Quiz() {
     const [userAnswers, setUserAnswers] = useState([]);
@@ -9,12 +10,10 @@ export default function Quiz() {
     const activeQuestionIndex = userAnswers.length;
     
     const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
-    console.log(activeQuestionIndex)
 
     function handleSelectAnswer(answer) {
         setUserAnswers((prevUserAnswers) => [...prevUserAnswers, answer])
     }
-    console.log(userAnswers);
 
     if (quizIsComplete) {
         return (
@@ -40,6 +39,7 @@ export default function Quiz() {
                             </li>
                         ) )}
                 </ul>
+                <QuestionTimer />
             </div>
         </div>
     )
