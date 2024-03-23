@@ -3,7 +3,6 @@ import QUESTIONS from '../questions.js';
 
 export default function Summary({ userAnswers }) {
     const length = QUESTIONS.length;
-    console.log(userAnswers);
     const correctAnswers = userAnswers.filter((userAnswer, index) => userAnswer === QUESTIONS[index].answers[0]).length;
     const skippedAnswers = userAnswers.filter((userAnswer) => userAnswer === null).length;
     const incorrectAnswers = userAnswers.filter((userAnswer, index) => userAnswer !== null && userAnswer !== QUESTIONS[index].answers[0]).length;
@@ -38,11 +37,26 @@ export default function Summary({ userAnswers }) {
             </p>
         </div>
         <ol>
-            <li>
-                <h3>2</h3>
-                <p className="question">question text</p>
-                <p className="user-answer">user's answer</p>
-            </li>
+            {userAnswers.map((userAnswer, index) => {
+                let cssClass = 'user-answer';
+
+                if (userAnswer === null) {
+                    cssClass += ' skipped';
+                } else if (userAnswer === QUESTIONS[index].answers[0]) {
+                    cssClass += ' correct';
+                } else {
+                    cssClass += ' wrong';
+                }
+                const isCorrect = userAnswer === QUESTIONS[index].answers[0];
+                return (
+                    <li key={index}>
+                        <h3>{index + 1}</h3>
+                        <p className="question">{QUESTIONS[index].text}</p>
+                        <p className={cssClass}>{userAnswer ?? 'Skipped'}</p>
+                    </li>
+                )
+            }
+        )}
         </ol>
     </div>
     )
