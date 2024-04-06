@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export function useFetch(fetchFn, initialValue) {
   const [isFetching, setIsFetching] = useState();
