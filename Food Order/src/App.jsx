@@ -1,4 +1,5 @@
 import MealItem from "./components/MealItem";
+import Header from "./components/Header";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -27,12 +28,10 @@ function App() {
 
   return (
     <>
-      <h1>You got this 💪</h1>
-      <p>Stuck? Not sure how to proceed?</p>
-      <p>Don't worry - we've all been there. Let's build it together!</p>
+    <Header />
       <div id="meals">
         {meals.map(meal => (
-          <MealItem key={meal.id} name={meal.name} description={meal.description} price={meal.price} />
+          <MealItem key={meal.id} name={meal.name} description={meal.description} price={meal.price} image={meal.image}/>
         ))}
       </div>
     </>
