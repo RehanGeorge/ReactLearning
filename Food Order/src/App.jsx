@@ -1,4 +1,4 @@
-import Product from "./components/MealItem";
+import MealItem from "./components/MealItem";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -30,7 +30,11 @@ function App() {
       <h1>You got this 💪</h1>
       <p>Stuck? Not sure how to proceed?</p>
       <p>Don't worry - we've all been there. Let's build it together!</p>
-      <Product />
+      <div id="meals">
+        {meals.map(meal => (
+          <MealItem key={meal.id} name={meal.name} description={meal.description} price={meal.price} />
+        ))}
+      </div>
     </>
   );
 }
