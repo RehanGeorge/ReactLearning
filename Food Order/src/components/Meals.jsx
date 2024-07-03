@@ -29,7 +29,6 @@ export default function Meals(props) {
         </section>
         );
     }
-    console.log(props.image);
 
     return (
         <div className="meal-item">
