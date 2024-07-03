@@ -1,17 +1,15 @@
-export default function Product(props) {
-    console.log(props.image);
-
+export default function MealItem(props) {
     return (
         <div className="meal-item">
-            <div>
-                <img src={props.image} alt={props.name} />
+            <article>
+                <img src={`http://localhost:3000/${props.image}`} alt={props.name} />
                 <h3>{props.name}</h3>
-                <div className="meal-item-price">{props.price}</div>
-                <div className="meal-item-description">{props.description}</div>
-            </div>
-            <div>
-                <button>Add to Cart</button>
-            </div>
+                <p className="meal-item-price">{props.price}</p>
+                <p className="meal-item-description">{props.description}</p>
+                <p className="meal-item-actions">
+                    <button>Add to Cart</button>
+                </p>
+            </article>
         </div>
     )
 }
