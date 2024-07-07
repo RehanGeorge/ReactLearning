@@ -49,7 +49,7 @@ export default function Checkout() {
                 <Input label="E-Mail Address" type="email" id="email" />
                 <Input label="Street" type="text" id="street" />
                 <div className="control-row">
-                    <Input label="Postal Code" type="text" id="postal" />
+                    <Input label="Postal Code" type="text" id="postal-code" />
                     <Input label="City" type="text" id="city" />
                 </div>
 
