@@ -12,6 +12,8 @@ export default function InvestmentForm() {
     })
     const [annualData, setAnnualData] = useState([]);
 
+    const validDuration = formDetails.duration >= 1;
+
     function formChangeHandler(target, value) {
         setFormDetails((prev) => {
             return {
@@ -19,7 +21,6 @@ export default function InvestmentForm() {
                 [target]: value
             }
         })
-        console.log(formDetails)
     }
 
     useEffect(() => {
@@ -40,7 +41,8 @@ export default function InvestmentForm() {
                     <InvestmentFormFields label="Duration" id="duration" initialValue={formDetails.duration} onInput={formChangeHandler}/>
                 </div>
             </section>
-            <Result data={annualData} />
+            {validDuration && <Result data={annualData} />}
+            {!validDuration && <p className="center">Please enter a duration greater than 0.</p>}
         </div>
     )
 }
