@@ -1,4 +1,5 @@
 import NewProject from "./components/NewProject";
+import NoProjectSelected from "./components/NoProjectSelected";
 import Sidebar from "./components/Sidebar";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
         <Sidebar />
         <NewProject />
       </div>
+      <NoProjectSelected />
     </>
   );
 }
