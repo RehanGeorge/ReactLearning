@@ -1,4 +1,4 @@
-import MainBody from "./components/MainBody";
+import NewProject from "./components/NewProject";
 import Sidebar from "./components/Sidebar";
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
     <>
       <div className="h-screen my-8">
         <Sidebar />
-        <MainBody />
+        <NewProject />
       </div>
     </>
   );
