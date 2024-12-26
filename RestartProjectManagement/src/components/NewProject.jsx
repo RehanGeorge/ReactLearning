@@ -47,7 +47,7 @@ export default function NewProject({ onAdd, onCancel }) {
                 <div>
                     <Input ref={title} label="Title" />
                     <Input ref={description} label="Description" textarea />
-                    <Input ref={dueDate} label="Due Date" />
+                    <Input ref={dueDate} label="Due Date" placeholder="dd.mm.yyyy"/>
                 </div>
             </div>
         </>
