@@ -45,9 +45,9 @@ export default function NewProject({ onAdd, onCancel }) {
                             onClick={handleSave}>Save</button></li>
                 </menu>
                 <div>
-                    <Input ref={title} label="Title" />
+                    <Input type="text" ref={title} label="Title" />
                     <Input ref={description} label="Description" textarea />
-                    <Input ref={dueDate} label="Due Date" placeholder="dd.mm.yyyy"/>
+                    <Input type="date" ref={dueDate} label="Due Date" placeholder="dd.mm.yyyy"/>
                 </div>
             </div>
         </>
