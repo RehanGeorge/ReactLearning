@@ -1,22 +1,15 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { CounterContext } from "../store/counter-context";
 
 export default function Counter() {
-    const [count, setCount] = useState(0);
-
-    function increaseCount() {
-        setCount(count + 1);
-    }
-
-    function decreaseCount() {
-        setCount(count - 1);
-    }
-
+    const counterCtx = useContext(CounterContext);    
+    
     return (
         <div>
             <h1>Counter</h1>
-            <p>{count}</p>
-            <button onClick={increaseCount}>Increase</button>
-            <button onClick={decreaseCount}>Decrease</button>
+            <p>{counterCtx.count}</p>
+            <button onClick={counterCtx.increaseCount}>Increase</button>
+            <button onClick={counterCtx.decreaseCount}>Decrease</button>
         </div>
     )
 }
