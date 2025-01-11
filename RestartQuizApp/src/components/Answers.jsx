@@ -1,24 +1,35 @@
-export default function Answers({ answers, selectedAnswer, answerState}) {
-    <ul id="answers">
-        {shuffledAnswers.current.map((answer, index) => {
-            const isSelected = userAnswers[userAnswers.length - 1] === answer;
-            let cssClasses = '';
+import { useRef } from "react";
 
-            if (answerState === 'answered' && isSelected ) {
-            cssClasses = 'selected';
-            }
+export default function Answers({ answers, selectedAnswer, answerState, onSelect }) {
+    const shuffledAnswers = useRef();
 
-            if ((answerState === 'correct' || answerState === 'wrong') && isSelected) {
-            cssClasses = answerState;
-            }
+    if (!shuffledAnswers.current) {
+        shuffledAnswers.current = [...answers].sort(() => Math.random() - 0.5);
+    }
 
-                return (
-                    <li key={index} className="answer">
-                        <button onClick={() => handleSelectAnswer(answer)} className={cssClasses}>
-                            {answer}
-                        </button>
-                    </li>
-                )
-        })}
-    </ul>
+    return (
+        <ul id="answers">
+            {shuffledAnswers.current.map((answer, index) => {
+                const isSelected = selectedAnswer === answer;
+                let cssClasses = '';
+
+                if (answerState === 'answered' && isSelected ) {
+                cssClasses = 'selected';
+                }
+
+                if ((answerState === 'correct' || answerState === 'wrong') && isSelected) {
+                cssClasses = answerState;
+                }
+
+                    return (
+                        <li key={answer} className="answer">
+                            <button onClick={() => onSelect(answer)} className={cssClasses}>
+                                {answer}
+                            </button>
+                        </li>
+                    )
+            })}
+        </ul>
+    )
+
 }
