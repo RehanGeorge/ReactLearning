@@ -48,28 +48,7 @@ export default function Quiz() {
             <div id="question">
                 <QuestionTimer key={activeQuestionIndex} timeout={10000} onTimeout={handleSkipAnswer} />
                 <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-                <ul id="answers">
-                    {shuffledAnswers.current.map((answer, index) => {
-                        const isSelected = userAnswers[userAnswers.length - 1] === answer;
-                        let cssClasses = '';
-
-                        if (answerState === 'answered' && isSelected ) {
-                             cssClasses = 'selected';
-                        }
-
-                        if ((answerState === 'correct' || answerState === 'wrong') && isSelected) {
-                            cssClasses = answerState;
-                        }
-                        
-                        return (
-                        <li key={index} className="answer">
-                            <button onClick={() => handleSelectAnswer(answer)} className={cssClasses}>
-                                {answer}
-                            </button>
-                        </li>
-                        )
-                    })}
-                </ul>
+                
             </div>
         </div>
     )
