@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 
 import QUESTIONS from "../../questions";
 import Question from "./Question";
+import Summary from "./Summary";
 
 export default function Quiz() {
     const [userAnswers, setUserAnswers] = useState([]);
@@ -16,12 +17,7 @@ export default function Quiz() {
     const handleSkipAnswer = useCallback(() => handleSelectAnswer(null), [handleSelectAnswer]);
 
     if (quizIsOver) {
-        return (
-            <div id="summary">
-                <h2>Quiz is over!</h2>
-                <p>You answered {userAnswers.filter((answer, index) => answer === QUESTIONS[index].correctAnswer).length} out of {QUESTIONS.length} questions correctly.</p>
-            </div>
-        );
+        return <Summary userAnswers={userAnswers} />;
     }
 
     return (
