@@ -1,30 +1,51 @@
 import quizCompleteImg from '../assets/quiz-complete.png';
+import QUESTIONS from '../../questions';
 
-export default function Summary() {
+export default function Summary({ userAnswers }) {
+    const skippedAnswers = userAnswers.filter((answer) => answer === null);
+    const correctAnswers = userAnswers.filter((answer, index) => answer === QUESTIONS[index].answers[0]);
+
+    const skippedAnswerShare = Math.round((skippedAnswers.length / userAnswers.length) * 100, 2);
+    const correctAnswerShare = Math.round((correctAnswers.length / userAnswers.length) * 100, 2);
+    const incorrectAnswerShare = 100 - skippedAnswerShare - correctAnswerShare;
+
         return (
             <div id="summary">
                 <img src={quizCompleteImg} alt="Trophy icon" />
                 <h2>Quiz Completed!</h2>
                 <div id="summary-stats">
                     <p>
-                        <span className='number'>10%</span>
+                        <span className='number'>{skippedAnswerShare}%</span>
                         <span className='text'>skipped</span>
                     </p>
                     <p>
-                        <span className='number'>10%</span>
+                        <span className='number'>{correctAnswerShare}%</span>
                         <span className='text'>correct</span>
                     </p>
                     <p>
-                        <span className='number'>10%</span>
+                        <span className='number'>{incorrectAnswerShare}%</span>
                         <span className='text'>incorrect</span>
                     </p>
                 </div>
                 <ol>
-                    <li>
-                        <h3>2</h3>
-                        <p className='question'>question text</p>
-                        <p className='answer'>correct answer</p>
-                    </li>
+                    {userAnswers.map((answer, index) => {
+                        let cssClass = 'user-answer';
+
+                        if (answer === null) {
+                            cssClass += ' skipped';
+                        } else if (answer === QUESTIONS[index].answers[0]) {
+                            cssClass += ' correct';
+                        } else {
+                            cssClass += ' wrong';
+                        }
+                        return (
+                            <li key={index}>
+                                <h3>{index + 1}</h3>
+                                <p className='question'>{QUESTIONS[index].text}</p>
+                                <p className={cssClass}>{answer ?? 'Skipped'}</p>
+                            </li>
+                        )
+                    })}
                 </ol>
             </div>
         );
