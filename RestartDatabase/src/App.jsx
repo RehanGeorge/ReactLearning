@@ -5,12 +5,14 @@ import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
+import ErrorFile from './components/ErrorFile.jsx';
 import { updateUserPlaces } from './http.js';
 
 function App() {
   const selectedPlace = useRef();
 
   const [userPlaces, setUserPlaces] = useState([]);
+  const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -37,7 +39,10 @@ function App() {
     try {
       await updateUserPlaces([selectedPlace, ...userPlaces]);
     } catch (error) {
-      console.error('Failed to update user places:', error);
+      setUserPlaces(userPlaces);
+      setErrorUpdatingPlaces({
+        message: error.message || 'Could not update places, please try again later!',
+      })
     }
   }
 
@@ -46,11 +51,27 @@ function App() {
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current.id)
     );
 
+    try{ 
+      await updateUserPlaces(userPlaces.filter((place) => place.id !== selectedPlace.current.id))
+    } catch (error) {
+      setUserPlaces(userPlaces);
+      setErrorUpdatingPlaces({
+        message: error.message || 'Failed to delete place.'
+      });
+    }
+
     setModalIsOpen(false);
-  }, []);
+  }, [userPlaces]);
+
+  function handleError() {
+    setErrorUpdatingPlaces(false);
+  }
 
   return (
     <>
+      <Modal open={errorUpdatingPlaces} onClose={handleError}>
+        {errorUpdatingPlaces && <ErrorFile title="An error occurred!" message={errorUpdatingPlaces.message} />}
+      </Modal>
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
