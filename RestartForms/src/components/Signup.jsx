@@ -1,6 +1,20 @@
 export default function Signup() {
+    function handleSubmit(event) {
+        event.preventDefault();
+        
+        // Form Data object has all the form data as long as the input fields have a name attribute
+        const fd = new FormData(event.target);
+        const acquisitionChannel = fd.getAll('acquisition');
+        const data = Object.fromEntries(fd.entries());
+        data.acquisition = acquisitionChannel;
+        console.log(data);
+
+        // Reset the form
+        // event.target.reset();
+    }
+
     return (
-      <form>
+      <form onSubmit={handleSubmit}>
         <h2>Welcome on board!</h2>
         <p>We just need a little bit of data from you to get you started 🚀</p>
   
