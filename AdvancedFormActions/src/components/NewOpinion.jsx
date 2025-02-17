@@ -1,14 +1,17 @@
-import { useActionState } from "react";
+import { useActionState, use } from "react";
+import { OpinionsContext } from "../store/opinions-context";
 
 export function NewOpinion() {
-  function dataParser(prevFormData, formData) {
+  const { addOpinion } = use(OpinionsContext);
+
+  async function shareOpinionFunction(prevState, formData) {
     const username = formData.get("userName");
     const title = formData.get("title");
     const body = formData.get("body");
 
     let errors = [];
 
-    if (username.trim().split(" ").length === 1) {
+    if (username.trim().split(" ").length <= 1) {
       errors.push("Please provide your full name");
     }
 
@@ -16,18 +19,19 @@ export function NewOpinion() {
       errors.push("Title must be at least 5 characters long");
     }
 
-    if (body.trim().length < 10) {
-      errors.push("Opinion must be at least 10 characters long");
+    if (body.trim().length < 10 || body.trim().length > 300) {
+      errors.push("Opinion must be between 10 and 300 characters long");
     }
 
     if (errors.length > 0) {
       return { errors, enteredValues: { username, title, body }};
     }
 
+    await addOpinion({ userName: username, title, body });
     return { errors: null };
   }
 
-  const [formData, formAction] = useActionState(dataParser, {
+  const [formData, formAction] = useActionState(shareOpinionFunction, {
     userName: "",
     title: "",
     body: "",
@@ -55,7 +59,7 @@ export function NewOpinion() {
 
         <div>
           {formData.errors && (
-            <ul className="error">
+            <ul className="errors">
               {formData.errors.map((error) => (
                 <li key={error}>{error}</li>
               ))}
