@@ -1,6 +1,8 @@
+import FoodCard from "./FoodCard";
+
 import { useEffect, useState } from "react"
 
-export default function Food() {
+export default function Meals() {
     const [meals, setMeals] = useState([]);
 
     async function fetchMeals() {
@@ -14,13 +16,9 @@ export default function Food() {
     }, []);
 
     return (
-        <div>{meals.map((meal) => {
+        <div id="meals">{meals.map((meal) => {
             return (
-                <div key={meal.id}>
-                    <h2>{meal.name}</h2>
-                    <p>{meal.description}</p>
-                    <p>{meal.price}</p>
-                </div>
+                <FoodCard key={meal.id} meal={meal} />
             )
         })}</div>
     )
