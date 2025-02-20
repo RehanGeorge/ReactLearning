@@ -1,39 +1,17 @@
-import { useActionState, use } from "react";
-
-import { OpinionsContext } from "../store/opinions-context";
-import Submit from "./Submit";
+import { useActionState } from "react";
 
 export function NewOpinion() {
-  const { addOpinion } = use(OpinionsContext);
-
-  async function shareOpinionFunction(prevState, formData) {
+  function dataParser(prevFormData, formData) {
     const username = formData.get("userName");
     const title = formData.get("title");
     const body = formData.get("body");
 
-    let errors = [];
+    
 
-    if (username.trim().split(" ").length <= 1) {
-      errors.push("Please provide your full name");
-    }
-
-    if (title.trim().length < 5) {
-      errors.push("Title must be at least 5 characters long");
-    }
-
-    if (body.trim().length < 10 || body.trim().length > 300) {
-      errors.push("Opinion must be between 10 and 300 characters long");
-    }
-
-    if (errors.length > 0) {
-      return { errors, enteredValues: { username, title, body }};
-    }
-
-    await addOpinion({ userName: username, title, body });
-    return { errors: null };
+    console.log({ username, title, body });
   }
 
-  const [formData, formAction] = useActionState(shareOpinionFunction, {
+  const [formData, formAction] = useActionState(dataParser, {
     userName: "",
     title: "",
     body: "",
@@ -46,30 +24,22 @@ export function NewOpinion() {
         <div className="control-row">
           <p className="control">
             <label htmlFor="userName">Your Name</label>
-            <input type="text" id="userName" name="userName" defaultValue={formData.enteredValues?.username}/>
+            <input type="text" id="userName" name="userName" />
           </p>
 
           <p className="control">
             <label htmlFor="title">Title</label>
-            <input type="text" id="title" name="title" defaultValue={formData.enteredValues?.title}/>
+            <input type="text" id="title" name="title" />
           </p>
         </div>
         <p className="control">
           <label htmlFor="body">Your Opinion</label>
-          <textarea id="body" name="body" rows={5} defaultValue={formData.enteredValues?.body}></textarea>
+          <textarea id="body" name="body" rows={5}></textarea>
         </p>
 
-        <div>
-          {formData.errors && (
-            <ul className="errors">
-              {formData.errors.map((error) => (
-                <li key={error}>{error}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <Submit />
+        <p className="actions">
+          <button type="submit">Submit</button>
+        </p>
       </form>
     </div>
   );
