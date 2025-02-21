@@ -1,4 +1,5 @@
 import FoodCard from "./FoodCard";
+import Modal from "./Modal";
 
 import { useEffect, useState } from "react"
 
@@ -29,6 +30,7 @@ export default function Meals() {
 
     return (
         <>
+        <Modal />
         {isFetching && <p>Fetching</p>}
         {error && <p>{error}</p>}
         {!isFetching && <div id="meals">{meals.map((meal) => {
