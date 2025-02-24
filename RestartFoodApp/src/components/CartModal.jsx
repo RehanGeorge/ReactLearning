@@ -1,11 +1,11 @@
 import { useImperativeHandle, useRef } from "react";
 import { useContext } from "react";
 import { CartContext } from "../store/shopping-cart-context";
+import CartItem from "./CartItem";
 
 export default function CartModal({ ref }) {
     const cartCtx = useContext(CartContext);
     const cartItems = cartCtx.items;
-    console.log(cartItems);
 
     const dialogModal = useRef();
 
@@ -20,29 +20,8 @@ export default function CartModal({ ref }) {
                 <h2>Your Cart</h2>
                 <ul className="cart-items">
                     {cartItems.map((item) => (
-                        <li key={item.id}>
-                            <div className="cart-item">
-                                <p>{item.title}</p>
-                                <div className="cart-item-actions">
-                                    <button>-</button>
-                                    <span>{item.quantity}</span>
-                                    <button>+</button>
-                                </div>
-                            </div>
-                        </li>
+                        <CartItem key={item.id} item={item} />
                     ))}
-                    <li>
-                        <div className="cart-item">
-                            <p>Item 1</p>
-                            <div className="cart-item-actions">
-                                <button>-</button>
-                                <span>1</span>
-                                <button>+</button>
-                            </div>
-                        </div>
-                    </li>
-                    <p>Item 2</p>
-                    <p>Item 3</p>
                 </ul>
                 <div className="modal-actions">
                     <button className="text-button" onClick={() => dialogModal.current.close()}>Close</button>

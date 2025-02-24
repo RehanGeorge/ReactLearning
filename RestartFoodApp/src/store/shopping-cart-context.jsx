@@ -11,7 +11,7 @@ function shoppingCartReducer(state, action) {
         const updatedItems = [...state.items];
 
         const existingCartItemIndex = updatedItems.findIndex(
-            (cartItem) => cartItem.id === action.payload
+            (cartItem) => cartItem.item.id === action.payload.id
         );
         const existingCartItem = updatedItems[existingCartItemIndex];
 
@@ -23,7 +23,7 @@ function shoppingCartReducer(state, action) {
             updatedItems[existingCartItemIndex] = updatedItem;
         } else {
             updatedItems.push({
-                id: action.payload,
+                item: action.payload,
                 quantity: 1,
             });
         }
@@ -61,10 +61,10 @@ export default function CartContextProvider({ children }) {
         items: [],
     });
 
-    function handleAddItemToCart(id) {
+    function handleAddItemToCart(meal) {
         shoppingCartDispatch({
             type: "ADD_ITEM",
-            payload: id,
+            payload: meal,
         });
     }
 

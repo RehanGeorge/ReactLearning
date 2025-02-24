@@ -10,7 +10,7 @@ export default function FoodCard({ meal }) {
       <h3>{meal.name}</h3>
       <p className="meal-item-price">${meal.price}</p>
       <p className="meal-item-description">{meal.description}</p>
-      <button className="button" onClick={() => addItemToCart(meal.id)}>Add to Cart</button>
+      <button className="button" onClick={() => addItemToCart(meal)}>Add to Cart</button>
     </div>
   );
 }
