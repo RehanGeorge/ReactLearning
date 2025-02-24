@@ -21,5 +21,5 @@ export default function Header() {
             </header>
             <CartModal ref={modal} />
         </>
-    )
+    );
 }

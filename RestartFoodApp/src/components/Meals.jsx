@@ -1,5 +1,4 @@
 import FoodCard from "./FoodCard";
-import Modal from "./CartModal";
 
 import { useEffect, useState } from "react"
 
