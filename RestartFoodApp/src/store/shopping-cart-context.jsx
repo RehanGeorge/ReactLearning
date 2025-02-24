@@ -34,7 +34,7 @@ function shoppingCartReducer(state, action) {
     } else if (action.type === "UPDATE_ITEM") {
         const updatedItems = [...state.items];
         const updatedItemIndex = updatedItems.findIndex(
-            (item) => item.id === action.payload.productId
+            (item) => item.item.id === action.payload.productId
         );
 
         const updatedItem = {

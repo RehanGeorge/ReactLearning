@@ -20,7 +20,7 @@ export default function CartModal({ ref }) {
                 <h2>Your Cart</h2>
                 <ul className="cart-items">
                     {cartItems.map((item) => (
-                        <CartItem key={item.id} item={item} />
+                        <CartItem key={item.item.id} item={item} />
                     ))}
                 </ul>
                 <div className="modal-actions">
