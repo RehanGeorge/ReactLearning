@@ -4,7 +4,6 @@ import { CartContext } from "../store/shopping-cart-context";
 export default function CartItem({ item }) {
     const cartCtx = useContext(CartContext);
     const { updateItemQuantity } = cartCtx;
-    console.log(item.item.id);
     
     return (
         <li key={item.id}>
