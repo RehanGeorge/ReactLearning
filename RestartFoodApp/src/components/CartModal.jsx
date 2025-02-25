@@ -11,6 +11,7 @@ export default function CartModal({ ref }) {
     const formattedTotalPrice = `$${totalPrice.toFixed(2)}`;
 
     const dialogModal = useRef();
+    const checkoutModal = useRef();
 
     useImperativeHandle(ref, () => ({
         open: () => dialogModal.current.showModal(),
@@ -31,7 +32,7 @@ export default function CartModal({ ref }) {
                 </div>
                 <div className="modal-actions">
                     <button className="text-button" onClick={() => dialogModal.current.close()}>Close</button>
-                    <button className="button">Go to Checkout</button>
+                    <button className="button" ref={checkoutModal}>Go to Checkout</button>
                 </div>
             </div>
         </dialog>
