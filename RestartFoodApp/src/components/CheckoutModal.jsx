@@ -1,12 +1,20 @@
 import { useImperativeHandle, useRef } from "react"
+import SubmitModal from "./SubmitModal";
 
 export default function CheckoutModal({ ref }) {
     const dialogModal = useRef();
+
+    const successModal = useRef();
 
     useImperativeHandle(ref, () => ({
         open: () => dialogModal.current.showModal(),
         close: () => dialogModal.current.close()
     }));
+
+    function handleSubmit() {
+        dialogModal.current.close();
+        successModal.current.open();
+    }
 
     return (
         <>
@@ -38,9 +46,10 @@ export default function CheckoutModal({ ref }) {
                 </div>
                 <div className="modal-actions">
                     <button className="text-button" onClick={() => dialogModal.current.close()}>Close</button>
-                    <button className="button">Submit Order</button>
+                    <button className="button" onClick={handleSubmit}>Submit Order</button>
                 </div>
             </dialog>
+            <SubmitModal ref={successModal}/>
         </>
     )
 }
