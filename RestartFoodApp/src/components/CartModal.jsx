@@ -7,6 +7,9 @@ export default function CartModal({ ref }) {
     const cartCtx = useContext(CartContext);
     const cartItems = cartCtx.items;
 
+    const totalPrice = cartItems.reduce((total, item) => total + item.item.price * item.quantity, 0);
+    const formattedTotalPrice = `$${totalPrice.toFixed(2)}`;
+
     const dialogModal = useRef();
 
     useImperativeHandle(ref, () => ({
@@ -23,6 +26,9 @@ export default function CartModal({ ref }) {
                         <CartItem key={item.item.id} item={item} />
                     ))}
                 </ul>
+                <div className="cart-total">
+                    <h3>{formattedTotalPrice}</h3>
+                </div>
                 <div className="modal-actions">
                     <button className="text-button" onClick={() => dialogModal.current.close()}>Close</button>
                     <button className="button">Go to Checkout</button>
