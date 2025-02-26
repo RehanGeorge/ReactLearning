@@ -1,7 +1,11 @@
-import { useImperativeHandle, useRef } from "react"
+import { useImperativeHandle, useRef, useContext } from "react";
+import { CartContext } from "../store/shopping-cart-context";
 import SubmitModal from "./SubmitModal";
 
 export default function CheckoutModal({ ref }) {
+    const cartCtx = useContext(CartContext);
+    const cartItems = cartCtx.items;
+
     const dialogModal = useRef();
 
     const successModal = useRef();
@@ -11,10 +15,34 @@ export default function CheckoutModal({ ref }) {
         close: () => dialogModal.current.close()
     }));
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        customerData = new FormData(event.target);
+        const formData = new FormData(event.target);
+        const customerData = {};
+        formData.forEach((value, key) => {
+            customerData[key] = value;
+        });
         console.log(customerData);
+        try {
+            console.log(cartItems.length);
+            const response = await fetch('http://localhost:3000/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    order: {
+                        items: cartItems,
+                        customer: customerData,
+                    }
+                })
+            })
+            if (!response.ok) {
+                throw new Error('Something went wrong');
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
         dialogModal.current.close();
         successModal.current.open();
     }
@@ -40,7 +68,7 @@ export default function CheckoutModal({ ref }) {
                         <div className="control-row">
                             <div className="control">
                                 <label htmlFor="postal">Postal Code</label>
-                                <input id="postal" name="postal" required></input>
+                                <input id="postal" name="postal-code" required></input>
                             </div>
                             <div className="control">
                                 <label htmlFor="city">City</label>
