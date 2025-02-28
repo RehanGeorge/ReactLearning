@@ -1,3 +1,4 @@
+import Button from "./UI/Button";
 import logoImg from "../assets/logo.jpg";
 import CartModal from "./CartModal";
 import { useRef, useContext } from "react";
@@ -17,7 +18,7 @@ export default function Header() {
         <>
             <header id="main-header">
                 <h1 id="title"><img src={logoImg} alt="Burger" />ReactFood</h1>
-                <button className="button" onClick={handleCartClick}>Cart ({cartQuantity})</button>
+                <Button textOnly onClick={handleCartClick}>Cart ({cartQuantity})</Button>
             </header>
             <CartModal ref={modal} />
         </>
