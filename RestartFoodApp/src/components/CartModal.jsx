@@ -3,13 +3,13 @@ import { useContext } from "react";
 import { CartContext } from "../store/shopping-cart-context";
 import CartItem from "./CartItem";
 import CheckoutModal from "./CheckoutModal";
+import { currencyFormatter } from "../util/formatting";
 
 export default function CartModal({ ref }) {
     const cartCtx = useContext(CartContext);
     const cartItems = cartCtx.items;
 
     const totalPrice = cartItems.reduce((total, item) => total + item.item.price * item.quantity, 0);
-    const formattedTotalPrice = `$${totalPrice.toFixed(2)}`;
 
     const dialogModal = useRef();
     const checkoutModal = useRef();
@@ -35,7 +35,7 @@ export default function CartModal({ ref }) {
                         ))}
                     </ul>
                     <div className="cart-total">
-                        <h3>{formattedTotalPrice}</h3>
+                        <h3>{currencyFormatter.format(totalPrice)}</h3>
                     </div>
                     <div className="modal-actions">
                         <button className="text-button" onClick={() => dialogModal.current.close()}>Close</button>
