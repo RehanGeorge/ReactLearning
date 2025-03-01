@@ -11,7 +11,7 @@ function shoppingCartReducer(state, action) {
         const updatedItems = [...state.items];
 
         const existingCartItemIndex = updatedItems.findIndex(
-            (cartItem) => cartItem.item.id === action.payload.id
+            (cartItem) => cartItem.id.id === action.payload.id
         );
         const existingCartItem = updatedItems[existingCartItemIndex];
 
@@ -23,7 +23,7 @@ function shoppingCartReducer(state, action) {
             updatedItems[existingCartItemIndex] = updatedItem;
         } else {
             updatedItems.push({
-                item: action.payload,
+                id: action.payload,
                 quantity: 1,
             });
         }
@@ -34,7 +34,7 @@ function shoppingCartReducer(state, action) {
     } else if (action.type === "UPDATE_ITEM") {
         const updatedItems = [...state.items];
         const updatedItemIndex = updatedItems.findIndex(
-            (item) => item.item.id === action.payload.productId
+            (item) => item.id.id === action.payload.productId
         );
 
         const updatedItem = {
@@ -79,7 +79,7 @@ export default function CartContextProvider({ children }) {
         items: shoppingCartState.items,
         addItemToCart: handleAddItemToCart,
         updateItemQuantity: handleUpdateCartItemQuantity,
-    }
+    };
 
-    return <CartContext.Provider value={ctxValue}>{children}</CartContext.Provider>
+    return <CartContext.Provider value={ctxValue}>{children}</CartContext.Provider>;
 }

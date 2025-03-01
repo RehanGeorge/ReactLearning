@@ -1,18 +1,20 @@
 import Meals from "./components/Meals";
 import Header from "./components/Header";
 import CartContextProvider from "./store/shopping-cart-context";
-import UserProgressContext from "./store/UserProgressContext";
+import { UserProgressContextProvider } from "./store/UserProgressContext";
+import CartModal from "./components/CartModal";
 
 
 function App() {
   return (
     <>
-      <UserProgressContext>
+      <UserProgressContextProvider>
         <CartContextProvider>
           <Header />
           <Meals />
+          <CartModal />
         </CartContextProvider>
-      </UserProgressContext>
+      </UserProgressContextProvider>
     </>
   );
 }
