@@ -1,14 +1,12 @@
-import { useImperativeHandle, useRef } from "react";
 import { useContext } from "react";
 import { CartContext } from "../store/shopping-cart-context";
 import CartItem from "./CartItem";
-import CheckoutModal from "./CheckoutModal";
 import { currencyFormatter } from "../util/formatting";
 import Button from "./UI/Button";
 import UserProgressContext from "../store/UserProgressContext";
 import Modal from "./UI/Modal";
 
-export default function CartModal({ ref }) {
+export default function CartModal() {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
 
@@ -20,9 +18,15 @@ export default function CartModal({ ref }) {
         userProgressCtx.hideCart();
     }
 
+    function handleGoToCheckout() {
+        userProgressCtx.showCheckout();
+    }
+
     return (
         <>
-            <Modal className="cart" open={userProgressCtx.progress === 'cart'}>
+            <Modal
+             className="cart" open={userProgressCtx.progress === 'cart'}
+             onClose={userProgressCtx.progress === 'cart' ? handleCloseCart : null}>
                 <div className="cart">
                     <h2>Your Cart</h2>
                     <ul className="cart-items">
@@ -35,7 +39,7 @@ export default function CartModal({ ref }) {
                     </div>
                     <div className="modal-actions">
                         <Button textOnly onClick={handleCloseCart}>Close</Button>
-                        <Button onClick={handleCloseCart}>Go to Checkout</Button>
+                        {cartCtx.items.length > 0 && <Button onClick={handleGoToCheckout}>Go to Checkout</Button>}
                     </div>
                 </div>
             </Modal>
