@@ -4,6 +4,7 @@ import { CartContext } from "../store/shopping-cart-context";
 import CartItem from "./CartItem";
 import CheckoutModal from "./CheckoutModal";
 import { currencyFormatter } from "../util/formatting";
+import Button from "./UI/Button";
 
 export default function CartModal({ ref }) {
     const cartCtx = useContext(CartContext);
@@ -38,8 +39,8 @@ export default function CartModal({ ref }) {
                         <h3>{currencyFormatter.format(totalPrice)}</h3>
                     </div>
                     <div className="modal-actions">
-                        <button className="text-button" onClick={() => dialogModal.current.close()}>Close</button>
-                        <button className="button" onClick={handleCheckoutClick}>Go to Checkout</button>
+                        <Button textOnly onClick={() => dialogModal.current.close()}>Close</Button>
+                        <Button onClick={handleCheckoutClick}>Go to Checkout</Button>
                     </div>
                 </div>
             </dialog>
