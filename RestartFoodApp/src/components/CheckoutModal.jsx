@@ -5,10 +5,21 @@ import UserProgressContext from "../store/UserProgressContext";
 import Modal from "./UI/Modal";
 import Button from "./UI/Button";
 import { currencyFormatter } from "../util/formatting";
+import useHttp from "../hooks/useHttp";
+
+const requestConfig = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+};
 
 export default function CheckoutModal({ ref }) {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
+
+    const {data, isLoading: isSending, error, sendRequest} = useHttp('http://localhost:3000/orders', requestConfig, []);
+
     const cartItems = cartCtx.items;
 
     const totalPrice = cartItems.reduce((total, item) => total + item.id.price * item.quantity, 0);
@@ -30,32 +41,34 @@ export default function CheckoutModal({ ref }) {
         event.preventDefault();
         const formData = new FormData(event.target);
         const customerData = {};
+
         formData.forEach((value, key) => {
             customerData[key] = value;
         });
-        console.log(customerData);
-        try {
-            console.log(cartItems.length);
-            const response = await fetch('http://localhost:3000/orders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    order: {
-                        items: cartItems,
-                        customer: customerData,
-                    }
-                })
+
+        sendRequest(
+            JSON.stringify({
+                order: {
+                    items: cartItems,
+                    customer: customerData,
+                }
             })
-            if (!response.ok) {
-                throw new Error('Something went wrong');
-            }
-        } catch (error) {
-            console.log('Error:', error);
-        }
+        )
+        
+        console.log(customerData);
         dialogModal.current.close();
         successModal.current.open();
+    }
+
+    let actions = (
+        <>
+            <Button textOnly type="button" onClick={handleClose}>Close</Button>
+            <Button type="submit">Submit Order</Button>
+        </>
+    );
+
+    if (isSending) {
+        actions = <span>Sending order data...</span>;
     }
 
     return (
@@ -88,9 +101,9 @@ export default function CheckoutModal({ ref }) {
                                 </div>
                             </div>
                         </div>
+                        {error && <Error title="Failed to submit order" message={error} />}
                         <div className="modal-actions">
-                            <Button textOnly type="button" onClick={handleClose}>Close</Button>
-                            <Button type="submit">Submit Order</Button>
+                            {actions}
                         </div>
                 </form>
             </Modal>
