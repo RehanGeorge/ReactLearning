@@ -19,6 +19,7 @@ export default function useHttp(url, config, initialData) {
 
     const sendRequest = useCallback(async function sendRequest() {
         try {
+            setIsLoading(true);
             const resData = await sendHttpRequest(url, config);
             setData(resData);
         } catch (error) {
