@@ -225,6 +225,17 @@ h1 {
   color: #1f1a09;
 }
 
+.error {
+  width: 50%;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: auto;
+  background-color: #ffab04;
+  color: #f7254f;
+  font-weight: bold;
+  text-align: center;
+}
+
 .text-button {
   font: inherit;
   cursor: pointer;
