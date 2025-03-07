@@ -1,4 +1,4 @@
-import { useImperativeHandle, useRef, useContext } from "react";
+import { useContext } from "react";
 import { CartContext } from "../store/shopping-cart-context";
 import SubmitModal from "./SubmitModal";
 import UserProgressContext from "../store/UserProgressContext";
@@ -18,7 +18,8 @@ export default function CheckoutModal({ ref }) {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
 
-    const {data, isLoading: isSending, error, sendRequest} = useHttp('http://localhost:3000/orders', requestConfig, []);
+    const {data, isLoading: isSending, error, sendRequest, clearData} = useHttp('http://localhost:3000/orders', requestConfig, []);
+    console.log(data);
 
     const cartItems = cartCtx.items;
 
@@ -28,14 +29,11 @@ export default function CheckoutModal({ ref }) {
         userProgressCtx.hideCheckout();
     }
 
-    const dialogModal = useRef();
-
-    const successModal = useRef();
-
-    useImperativeHandle(ref, () => ({
-        open: () => dialogModal.current.showModal(),
-        close: () => dialogModal.current.close()
-    }));
+    function handleFinish() {
+        userProgressCtx.hideCheckout();
+        cartCtx.clearCart();
+        clearData();
+    }
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -54,10 +52,6 @@ export default function CheckoutModal({ ref }) {
                 }
             })
         )
-        
-        console.log(customerData);
-        dialogModal.current.close();
-        successModal.current.open();
     }
 
     let actions = (
@@ -69,6 +63,19 @@ export default function CheckoutModal({ ref }) {
 
     if (isSending) {
         actions = <span>Sending order data...</span>;
+    }
+
+    if (data.message && !error) {
+        return (
+            <Modal open={userProgressCtx.progress === 'checkout'} onClose={handleFinish}>
+                <h2>Success!</h2>                
+                <p>Your order was submitted successfully.</p>
+                <p>We will get back to you with more details via email within the next few minutes.</p>
+                <p className="modal-actions">
+                    <Button onClick={handleFinish}>Close</Button>
+                </p>
+            </Modal>
+        )
     }
 
     return (
@@ -107,7 +114,6 @@ export default function CheckoutModal({ ref }) {
                         </div>
                 </form>
             </Modal>
-            <SubmitModal ref={successModal}/>
         </>
     )
 }
