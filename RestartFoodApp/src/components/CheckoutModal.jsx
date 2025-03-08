@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useActionState } from "react";
 import { CartContext } from "../store/shopping-cart-context";
 import SubmitModal from "./SubmitModal";
 import UserProgressContext from "../store/UserProgressContext";
@@ -35,16 +35,14 @@ export default function CheckoutModal({ ref }) {
         clearData();
     }
 
-    async function handleSubmit(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
+    async function checkoutAction(prevState, formData) {
         const customerData = {};
 
         formData.forEach((value, key) => {
             customerData[key] = value;
         });
 
-        sendRequest(
+        await sendRequest(
             JSON.stringify({
                 order: {
                     items: cartItems,
@@ -54,6 +52,8 @@ export default function CheckoutModal({ ref }) {
         )
     }
 
+    const [formState, formAction, pending] = useActionState(checkoutAction, null);
+
     let actions = (
         <>
             <Button textOnly type="button" onClick={handleClose}>Close</Button>
@@ -61,7 +61,7 @@ export default function CheckoutModal({ ref }) {
         </>
     );
 
-    if (isSending) {
+    if (pending) {
         actions = <span>Sending order data...</span>;
     }
 
@@ -81,7 +81,7 @@ export default function CheckoutModal({ ref }) {
     return (
         <>
             <Modal open={userProgressCtx.progress === 'checkout'} onClose={handleClose}>
-                <form onSubmit={handleSubmit}>
+                <form action={formAction}>
                         <h2>Checkout</h2>
                         <p>Total Amount: {currencyFormatter.format(totalPrice)}</p>
                         <div className="control">
