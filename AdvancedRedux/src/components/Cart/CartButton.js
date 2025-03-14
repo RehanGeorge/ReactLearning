@@ -10,7 +10,9 @@ const CartButton = (props) => {
   };
 
   const cartItems = useSelector((state) => state.cart.items);
-  const cartQuantity = cartItems.length;
+  const cartQuantity = cartItems.reduce((curNumber, item) => {
+    return curNumber + item.quantity;
+  }, 0);
 
   return (
     <button className={classes.button} onClick={toggleCartHandler}>

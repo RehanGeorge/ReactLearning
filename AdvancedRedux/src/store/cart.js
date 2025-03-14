@@ -12,7 +12,7 @@ const cartSlice = createSlice({
         toggleCart(state) {
             state.show = !state.show;
         },
-        addItemToCart(state,action) {
+        addItemToCart(state, action) {
             const newItem = action.payload;
             const existingItem = state.items.find(item => item.id === newItem.id);
             if (!existingItem) {
@@ -24,6 +24,15 @@ const cartSlice = createSlice({
                 })
             } else {
                 existingItem.quantity++;
+            }
+        },
+        removeItemFromCart(state, action) {
+            const id = action.payload;
+            const existingItem = state.items.find(item => item.id === id);
+            if (existingItem.quantity === 1) {
+                state.items = state.items.filter(item => item.id !== id);
+            } else {
+                existingItem.quantity -= 1;
             }
         }
     },

@@ -9,6 +9,10 @@ const CartItem = (props) => {
   function addHandler() {
     dispatch(cartActions.addItemToCart({ id, title, price }));
   }
+
+  function removeHandler() {
+    dispatch(cartActions.removeItemFromCart(id));
+  }
   
   const total = price * quantity;
 
@@ -26,7 +30,7 @@ const CartItem = (props) => {
           x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button>-</button>
+          <button onClick={removeHandler}>-</button>
           <button onClick={addHandler}>+</button>
         </div>
       </div>
