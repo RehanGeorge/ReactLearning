@@ -3,9 +3,11 @@ import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { cartActions } from './store/cart-slice';
 
 function App() {
+  const dispatch = useDispatch();
   const cartIsVisible = useSelector((state) => state.cart.show);
   const cart = useSelector((state) => state.cart);
 
@@ -18,6 +20,11 @@ function App() {
         },
         body: JSON.stringify({ "cart" : cart }),
       });
+
+      if (!response.ok) {
+        throw new Error('Sending cart data failed');
+      }
+
       const data = await response.text();
       console.log(data);
     }
