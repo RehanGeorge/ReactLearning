@@ -4,7 +4,8 @@ import { uiActions } from './ui-slice';
 
 const initialState = {
     items: [],
-    show: false
+    show: false,
+    changed: false
 };
 
 const cartSlice = createSlice({
@@ -20,6 +21,7 @@ const cartSlice = createSlice({
         addItemToCart(state, action) {
             const newItem = action.payload;
             const existingItem = state.items.find(item => item.id === newItem.id);
+            state.changed = true;
             if (!existingItem) {
                 state.items.push({
                     id: newItem.id,
@@ -34,6 +36,7 @@ const cartSlice = createSlice({
         removeItemFromCart(state, action) {
             const id = action.payload;
             const existingItem = state.items.find(item => item.id === id);
+            state.changed = true;
             if (existingItem.quantity === 1) {
                 state.items = state.items.filter(item => item.id !== id);
             } else {
@@ -108,7 +111,7 @@ export function loadCartDetails() {
         try {
             const data = await sendRequest();
             dispatch(cartActions.replaceCart({
-                items: data.items,
+                items: data.items || [],
             }))
             dispatch(uiActions.showNotification({
                 status: 'success',
