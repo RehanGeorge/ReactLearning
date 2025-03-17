@@ -1,1 +1,1 @@
-{"cart":{"items":[{"id":1,"title":"Test","price":6,"quantity":2}],"show":false}}
+{"cart":{"items":[{"id":1,"title":"Test","price":6,"quantity":3}],"show":true}}

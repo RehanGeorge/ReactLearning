@@ -5,7 +5,7 @@ import Notification from './components/UI/Notification';
 
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { uiActions } from './store/ui-slice';
+import { sendCartData } from './store/cart-slice';
 
 let isInitial = true;
 
@@ -16,46 +16,11 @@ function App() {
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
-    async function fetchData() {
-      dispatch(uiActions.showNotification({
-        status: 'pending',
-        title: 'Sending...',
-        message: 'Sending cart data!',
-      }))
-      const response = await fetch('http://localhost:3001/api/v1', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ "cart" : cart }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Sending cart data failed');
-      }
-
-      dispatch(uiActions.showNotification({
-        status: 'success',
-        title: 'Success!',
-        message: 'Sent cart data successfully!',
-      }))
-
-      const data = await response.text();
-      console.log(data);
-    }
-
     if (isInitial) {
       isInitial = false;
       return;
     }
-    
-    fetchData().catch((error) => {
-      dispatch(uiActions.showNotification({
-        status: 'error',
-        title: 'Error!',
-        message: 'Sending cart data failed!',
-      }))
-    });
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
 
   return (
