@@ -11,6 +11,9 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+        replaceCart(state, action) {
+            state.items = action.payload.items;
+        },
         toggleCart(state) {
             state.show = !state.show;
         },
@@ -82,7 +85,7 @@ export function sendCartData(cart) {
     }
 }
 
-export function loadCartDetails(cart) {
+export function loadCartDetails() {
     return async (dispatch) => {
         dispatch(
             uiActions.showNotification({
@@ -98,10 +101,15 @@ export function loadCartDetails(cart) {
             if (!response.ok) {
                 throw new Error('Loading cart data failed');
             }
-        };
 
+            return response.json();
+        };
+        
         try {
-            await sendRequest();
+            const data = await sendRequest();
+            dispatch(cartActions.replaceCart({
+                items: data.items,
+            }))
             dispatch(uiActions.showNotification({
                 status: 'success',
                 title: 'Success!',

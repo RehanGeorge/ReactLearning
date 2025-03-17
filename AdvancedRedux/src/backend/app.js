@@ -15,7 +15,8 @@ app.use((req, res, next) => {
 app.get('/', async (req, res) => {
     const data = await fs.readFile('./data/data.js', 'utf8');
     const parsedData = JSON.parse(data);
-    res.send(parsedData[0].order);
+    console.log(parsedData);
+    res.send(parsedData.cart);
 })
 
 app.put('/api/v1/', async (req, res) => {
