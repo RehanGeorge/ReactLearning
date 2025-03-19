@@ -53,3 +53,8 @@ main {
   margin: 2rem auto;
   text-align: center;
 }
+
+a {
+  color: lightseagreen;
+  text-decoration: none;
+}
