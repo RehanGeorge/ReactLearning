@@ -1,14 +1,13 @@
-import { useLocation, Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 export default function EventDetailsPage() {
-    const idParam = useParams().eventId;
-    const location = useLocation();
-    const { description } = location.state;
+    const params = useParams();
+    const eventId = params.id;
 
     return (
         <div>
-            <h1>This is the Event Details Page for {idParam}</h1>
-            <p>{description}</p>
+            <h1>EventDetailsPage</h1>
+            <p>{eventId}</p>
             <Link to=".." relative="path">Back</Link>
         </div>
     )
