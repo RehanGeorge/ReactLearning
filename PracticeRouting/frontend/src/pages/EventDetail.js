@@ -8,6 +8,8 @@ export default function EventDetailsPage() {
         <div>
             <h1>EventDetailsPage</h1>
             <p>{eventId}</p>
+            <Link to="edit" relative="path">Edit</Link>
+            <br />
             <Link to=".." relative="path">Back</Link>
         </div>
     )
