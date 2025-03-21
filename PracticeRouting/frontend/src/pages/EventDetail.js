@@ -1,16 +1,25 @@
-import { useParams, Link } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
+import EventItem from "../components/EventItem";
 
 export default function EventDetailsPage() {
-    const params = useParams();
-    const eventId = params.id;
+
+    const data = useLoaderData();
 
     return (
-        <div>
-            <h1>EventDetailsPage</h1>
-            <p>{eventId}</p>
-            <Link to="edit" relative="path">Edit</Link>
-            <br />
-            <Link to=".." relative="path">Back</Link>
-        </div>
+        <EventItem event={data.event} />
     )
+}
+
+export async function loader({ request, params }) {
+    const id = params.id;
+
+    const response = await fetch('http://localhost:8080/events/' + id);
+
+    if (!response.ok) {
+        throw new Response(JSON.stringify({ message: 'Could not fetch event.' }), {
+            status: 500,
+        });
+    } else {
+        return response;
+    }
 }
