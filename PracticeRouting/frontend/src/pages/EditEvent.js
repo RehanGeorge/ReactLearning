@@ -21,8 +21,6 @@ export async function action({ request, params }) {
         description: data.get('description')
     };
 
-    console.log(JSON.stringify(eventData));
-
     const response = await fetch(`http://localhost:8080/events/${params.id}`, {
         method: 'PATCH',
         headers: {
