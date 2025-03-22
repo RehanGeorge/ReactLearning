@@ -1,18 +1,29 @@
-import { useRouteLoaderData, redirect } from "react-router-dom";
+import { Suspense } from "react";
+import { useRouteLoaderData, redirect, Await } from "react-router-dom";
 
 import EventItem from "../components/EventItem";
+import EventsList from "../components/EventsList";
 
 export default function EventDetailsPage() {
-    const data = useRouteLoaderData('event-detail');
+    const { event, events } = useRouteLoaderData('event-detail');
 
     return (
-        <EventItem event={data.event} />
+        <>
+            <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+                <Await resolve={event}>
+                {loadedEvent => <EventItem event={loadedEvent} />}
+                </Await>
+            </Suspense>
+            <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+                <Await resolve={events}>
+                    {loadedEvents => <EventsList events={loadedEvents} />}
+                </Await>
+            </Suspense>
+        </>
     )
 }
 
-export async function loader({ request, params }) {
-    const id = params.id;
-
+async function loadEvent(id) {
     const response = await fetch('http://localhost:8080/events/' + id);
 
     if (!response.ok) {
@@ -20,14 +31,40 @@ export async function loader({ request, params }) {
             status: 500,
         });
     } else {
-        return response;
+        const resData = await response.json();
+        return resData.event;
     }
 }
 
-export async function action({ params, request }) {
+async function loadEvents() {
+    const response = await fetch('http://localhost:8080/events');
+  
+    if (!response.ok) {
+      throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+        status: 500,
+      });
+    } else {
+      const resData = await response.json();
+      return resData.events;
+    }
+  }
+  
+
+export async function loader({ request, params }) {
+    const id = params.eventId;
+
+    return {
+        event: loadEvent(id),
+        events: loadEvents(),
+    };
+}
+
+export async function action({ params, request}) {
     const id = params.id;
+    const method = request.method;
+    console.log(id);
     const response = await fetch('http://localhost:8080/events/' + id, {
-        method: request.method,
+        method: method,
     });
 
     if (!response.ok) {
